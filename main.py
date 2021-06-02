@@ -2,8 +2,11 @@ import json
 import os
 import re
 
+# https://forums.rpgmakerweb.com/index.php?threads/how-to-turn-off-random-encounters.31071/
 # The property name responsible for saving average number of steps between random encounters
 es = 'encounterStep'
+# Responsible for saving the list of enemies to encounter
+el = 'encounterList'
 
 directory = './data/'
 files = []
@@ -17,7 +20,13 @@ for filename in os.listdir(directory):
 for path in files:
     f = open(path, 'r+', encoding="utf-8")
     data = json.load(f)
+
+    # Empty the encounter list
+    data[el] = []
+
+    # Bigger == Rarer random encounter
     data[es] = 999
+    
     f.seek(0)
     json.dump(data, f, ensure_ascii=False)
     f.close()
